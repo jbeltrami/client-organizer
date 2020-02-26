@@ -11,13 +11,8 @@ export const signUp = form => async (dispatch, getState, getFirebase) => {
       .collection('users')
       .doc(fbNewUser.user.uid)
       .set({
-        userType: 'client',
-        firstName: form.firstName,
-        lastName: form.lastName,
-        initials: form.firstName[0] + form.lastName[0],
         email: form.email,
         password: form.password,
-        clinic: form.clinic,
         createdAt: new Date(),
       });
 
