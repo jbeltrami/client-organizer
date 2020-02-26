@@ -11,6 +11,7 @@ import AllClients from './components/clients/AllClients';
 import SingleClient from './components/clients/SingleClient';
 import DeleteClient from './components/clients/DeleteClient';
 import UpdateClient from './components/clients/UpdateClient';
+import CreateService from './components/services/CreateService';
 
 const App = props => {
   const auth = useSelector(state => state.firebase.auth);
@@ -28,6 +29,7 @@ const App = props => {
             <Route exact path="/client/:id" component={SingleClient} />
             <Route exact path="/delete-client/:id" component={DeleteClient} />
             <Route exact path="/update-client/:id" component={UpdateClient} />
+            <Route exact path="/create-service/:id" component={CreateService} />
           </Switch>
         </div>
       </BrowserRouter>

@@ -50,8 +50,6 @@ export const updateClient = (id, form) => async (
 ) => {
   const firebase = getFirebase();
 
-  console.log(form.zip);
-
   try {
     await firebase
       .firestore()

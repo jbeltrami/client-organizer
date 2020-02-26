@@ -62,7 +62,7 @@ const SingleClient = () => {
               </div>
 
               <div className="w-100 mt-3">
-                <NavLink to="/create-service">
+                <NavLink to={`/create-service/${id}`}>
                   <button className="btn btn-info w-100">Add Service</button>
                 </NavLink>
               </div>
