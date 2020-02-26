@@ -52,13 +52,13 @@ const SingleClient = () => {
                 </div>
                 <div className="card-footer d-flex justify-content-between">
                   <NavLink to={`/update-client/${id}`}>
-                    <button type="button" class="btn btn-warning">
+                    <button type="button" className="btn btn-warning">
                       Update
                     </button>
                   </NavLink>
 
                   <NavLink to={`/delete-client/${id}`}>
-                    <button type="button" class="btn btn-danger">
+                    <button type="button" className="btn btn-danger">
                       Delete
                     </button>
                   </NavLink>

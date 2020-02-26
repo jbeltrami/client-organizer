@@ -1,21 +1,52 @@
 import React from 'react';
 import { useParams, NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteClient } from '../../actions/clientActions';
 import { useFirestoreConnect } from 'react-redux-firebase';
 
 const DeleteClient = props => {
   const { id } = useParams();
+  useFirestoreConnect([{ collection: 'clients', doc: id }]);
+  const { history } = props;
+  const dispatch = useDispatch();
 
-  return (
-    <div className="container mt-5">
-      <div className="row align-items-center justify-content-center">
-        <div className="col-md-10">
-          Are you sure you want to delete this client?
-          {id}
-        </div>
-      </div>
-    </div>
+  const client = useSelector(
+    ({ firestore: { data } }) => data.clients && data.clients[id],
   );
+
+  const onDelete = e => {
+    dispatch(deleteClient(id));
+    history.push('/clients');
+  };
+
+  const renderDeleteScreen = someClient => {
+    if (someClient)
+      return (
+        <div className="container mt-5">
+          <div className="row align-items-center justify-content-center">
+            <div className="col-md-10">
+              <p className="text-center">
+                Are you sure you want to delete
+                <span className="font-weight-bold">{` ${client.firstName} ${client.lastName}`}</span>
+              </p>
+
+              <div className="d-flex w-50 justify-content-around ml-auto mr-auto">
+                <button className="btn btn-danger" onClick={onDelete}>
+                  Delete
+                </button>
+                <NavLink to={`/client/${id}`}>
+                  <button className="btn btn-info">Go Back</button>
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    return <></>;
+  };
+
+  return renderDeleteScreen(client);
 };
 
 export default DeleteClient;

@@ -26,3 +26,19 @@ export const createClient = form => async (dispatch, getState, getFirebase) => {
     await dispatch({ type: 'CREATE_CLIENT_ERROR', payload: error.message });
   }
 };
+
+export const deleteClient = id => async (dispatch, getState, getFirebase) => {
+  const firebase = getFirebase();
+
+  try {
+    await firebase
+      .firestore()
+      .collection('clients')
+      .doc(id.toString())
+      .delete();
+
+    await dispatch({ type: 'DELETE_CLIENT', payload: id });
+  } catch (error) {
+    await dispatch({ type: 'DELETE_CLIENT_ERROR', payload: error.message });
+  }
+};

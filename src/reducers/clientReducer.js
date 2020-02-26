@@ -10,7 +10,7 @@ const clientReducer = (state = { authError: '' }, action) => {
 
     case 'UPDATE_CLIENT':
       console.log('UPDATE CLIENT SUCCES');
-      return { ...state, currentClient: action.payload };
+      return state;
 
     case 'UPDATE_CLIENT_ERROR':
       console.error('UPDATE CLIENT ERROR: ', action.payload);
@@ -18,7 +18,7 @@ const clientReducer = (state = { authError: '' }, action) => {
 
     case 'DELETE_CLIENT':
       console.log('DELETE CLIENT SUCCESS');
-      return { ...state, currentClient: undefined };
+      return state;
 
     case 'DELETE_CLIENT_ERROR':
       console.error('DELETE CLIENT ERROR: ', action.payload);

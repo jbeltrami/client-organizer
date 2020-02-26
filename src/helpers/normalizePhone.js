@@ -1,6 +1,6 @@
 const normalizePhone = phone => {
   //normalize string and remove all unnecessary characters
-  phone = phone.replace(/[^\d]/g, '');
+  phone = phone ? phone.replace(/[^\d]/g, '') : phone;
 
   //check if number length equals to 10
   if (phone.length === 10) {
