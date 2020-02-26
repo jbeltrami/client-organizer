@@ -86,7 +86,7 @@ const CreateClient = props => {
                 <input
                   className="form-control"
                   type="text"
-                  name="zipCode"
+                  name="zip"
                   onChange={onInputChange}
                   required
                 />
@@ -108,7 +108,8 @@ const CreateClient = props => {
                 <label htmlFor="birthday">DOB</label>
                 <input
                   className="form-control"
-                  type="date"
+                  type="text"
+                  placeholder="mm/dd/yyyy"
                   name="birthday"
                   onChange={onInputChange}
                 />

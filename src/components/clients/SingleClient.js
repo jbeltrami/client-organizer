@@ -33,10 +33,7 @@ const SingleClient = () => {
                   </h6>
                   <p className="card-text">
                     <span className="font-weight-bold">Birthday: </span>
-                    {` ${moment
-                      .unix(client.birthday.seconds)
-                      .utc()
-                      .format('MMMM Do')}`}
+                    {client.birthday}
                   </p>
 
                   <div>

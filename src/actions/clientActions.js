@@ -14,10 +14,10 @@ export const createClient = form => async (dispatch, getState, getFirebase) => {
         address: form.address,
         city: form.city,
         state: form.state,
-        zip: form.zipCode,
+        zip: form.zip,
         phoneNumber: form.phoneNumber,
         email: form.email,
-        birthday: new Date(form.birthday),
+        birthday: form.birthday,
         createdAt: new Date(),
       });
 
@@ -40,5 +40,38 @@ export const deleteClient = id => async (dispatch, getState, getFirebase) => {
     await dispatch({ type: 'DELETE_CLIENT', payload: id });
   } catch (error) {
     await dispatch({ type: 'DELETE_CLIENT_ERROR', payload: error.message });
+  }
+};
+
+export const updateClient = (id, form) => async (
+  dispatch,
+  getState,
+  getFirebase,
+) => {
+  const firebase = getFirebase();
+
+  console.log(form.zip);
+
+  try {
+    await firebase
+      .firestore()
+      .collection('clients')
+      .doc(id.toString())
+      .set({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        address: form.address,
+        city: form.city,
+        state: form.state,
+        zip: form.zip || form.zip,
+        phoneNumber: form.phoneNumber,
+        email: form.email,
+        birthday: form.birthday,
+        createdAt: form.createdAt,
+        updatedAt: new Date(),
+      });
+    await dispatch({ type: 'UPDATE_CLIENT', payload: form });
+  } catch (error) {
+    await dispatch({ type: 'UPDATE_CLIENT_ERROR', payload: error.message });
   }
 };
