@@ -30,15 +30,15 @@ const AllClients = () => {
       const clientsArray = filteredClients && Object.values(filteredClients);
       const clientsIndex = filteredClients && Object.keys(filteredClients);
 
-      const filteredClientsArray = clientsArray.filter((client, i) => {
-        const firstName = client.firstName.toLowerCase();
-        const lastName = client.lastName.toLowerCase();
-        if (
-          firstName.indexOf(searchVal) !== -1 ||
-          lastName.indexOf(searchVal) !== -1
-        )
-          return { [clientsIndex[i]]: client };
-      });
+      const filteredClientsArray = clientsArray.reduce((acc, client, i) => {
+        const name = `
+          ${client.firstName.toLowerCase()} ${client.lastName.toLowerCase()}`;
+
+        if (name.indexOf(searchVal) !== -1)
+          return { ...acc, [clientsIndex[i]]: client };
+
+        return acc;
+      }, {});
 
       return setFilteredClients(filteredClientsArray);
     }
