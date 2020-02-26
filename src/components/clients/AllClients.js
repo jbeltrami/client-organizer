@@ -58,7 +58,7 @@ const AllClients = () => {
           </div>
         </div>
 
-        <div className="row align-items-center justify-content-start">
+        <div className="row align-items-stretch justify-content-center">
           {renderClients(filteredClients)}
         </div>
       </div>
