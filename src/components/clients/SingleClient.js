@@ -3,7 +3,6 @@ import { useParams, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import normalizePhone from '../../helpers/normalizePhone';
-import moment from 'moment';
 
 const SingleClient = () => {
   const { id } = useParams();

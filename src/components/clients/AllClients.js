@@ -27,8 +27,8 @@ const AllClients = () => {
   const handleSearch = e => {
     const searchVal = e.target.value.toLowerCase();
     if (searchVal !== '') {
-      const clientsArray = filteredClients && Object.values(filteredClients);
-      const clientsIndex = filteredClients && Object.keys(filteredClients);
+      const clientsArray = clients && Object.values(clients);
+      const clientsIndex = clients && Object.keys(clients);
 
       const filteredClientsArray = clientsArray.reduce((acc, client, i) => {
         const name = `
