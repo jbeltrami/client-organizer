@@ -34,6 +34,12 @@ const Navbar = props => {
               <div className="nav-link">Sign Up</div>
             </NavLink>
           </li>
+
+          <li className="nav-item">
+            <NavLink to="/create-client">
+              <div className="nav-link">Add New Client</div>
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
