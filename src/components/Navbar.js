@@ -22,14 +22,6 @@ const Navbar = props => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <NavLink to="/">
-              <div className="nav-link">
-                Home <span className="sr-only">(current)</span>
-              </div>
-            </NavLink>
-          </li>
-
-          <li className="nav-item">
             <NavLink to="/clients">
               <div className="nav-link">Clients</div>
             </NavLink>
