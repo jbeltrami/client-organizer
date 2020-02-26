@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createClient } from '../../actions/clientActions';
 
-const CreateClient = () => {
+const CreateClient = props => {
   const [form, setForm] = useState({});
   const dispatch = useDispatch();
 
@@ -16,6 +16,7 @@ const CreateClient = () => {
   const handleSubmit = e => {
     e.preventDefault();
     dispatch(createClient(form));
+    props.history.push('/clients');
   };
 
   return (
