@@ -30,14 +30,20 @@ const Navbar = props => {
           </li>
 
           <li className="nav-item">
-            <NavLink to="/sign-up">
-              <div className="nav-link">Sign Up</div>
+            <NavLink to="/clients">
+              <div className="nav-link">Clients</div>
             </NavLink>
           </li>
 
           <li className="nav-item">
             <NavLink to="/create-client">
               <div className="nav-link">Add New Client</div>
+            </NavLink>
+          </li>
+
+          <li className="nav-item ml-auto">
+            <NavLink to="/sign-up">
+              <div className="nav-link">Sign Up</div>
             </NavLink>
           </li>
         </ul>
