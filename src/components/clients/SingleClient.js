@@ -3,6 +3,7 @@ import { useParams, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import normalizePhone from '../../helpers/normalizePhone';
+import AllServices from '../services/AllServices';
 
 const SingleClient = () => {
   const { id } = useParams();
@@ -68,12 +69,7 @@ const SingleClient = () => {
               </div>
             </div>
             <div className="col-md-8">
-              <div className="row mb-3">
-                <div className="col-md-12">Filters go here</div>
-              </div>
-              <div className="row align-items-start">
-                <div className="col-md-12">Add accordions here</div>
-              </div>
+              <AllServices client={id} />
             </div>
           </div>
         </div>
