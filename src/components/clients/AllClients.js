@@ -1,58 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { Redirect } from 'react-router-dom';
-import { useSelector, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import ClientCard from './ClientCard';
 
-const AllClients = props => {
+const AllClients = ({ firebase, allClients }) => {
   useFirestoreConnect('clients');
-  const clients = props.clients;
-  const authId = props.firebase.auth.uid;
-  const [filteredClients, setFilteredClients] = useState({});
+  const authId = firebase.auth.uid;
+  const clients =
+    allClients &&
+    Object.entries(allClients).filter(e => e[1].ownerId === authId);
 
-  useEffect(() => {
-    setFilteredClients(clients);
-  }, [clients]);
+  const handleSearch = () => {
+    console.log('handle search');
+  };
 
-  const verifyId = e => e.ownerId === authId;
-
-  const renderClients = clientList => {
-    const clientsArray = clientList && Object.values(clientList);
-    const clientsIndex = clientList && Object.keys(clientList);
-    const availableClients = clientsArray && clientsArray.filter(verifyId);
-
-    if (availableClients && availableClients.length)
-      return availableClients.map((e, i) => {
-        return (
-          <ClientCard {...e} key={clientsIndex[i]} userId={clientsIndex[i]} />
-        );
+  const renderClientCards = clientList => {
+    if (clientList && clientList.length)
+      return clientList.map((e, i) => {
+        return <ClientCard {...e[1]} key={e[0]} userId={e[0]} />;
       });
 
     return <p>Please add some clients.</p>;
-  };
-
-  const handleSearch = e => {
-    const searchVal = e.target.value.toLowerCase();
-    if (searchVal !== '') {
-      const clientsArray = clients && Object.values(clients);
-      const clientsIndex = clients && Object.keys(clients);
-
-      const filteredClientsArray = clientsArray
-        .filter(verifyId)
-        .reduce((acc, client, i) => {
-          const name = `
-          ${client.firstName.toLowerCase()} ${client.lastName.toLowerCase()}`;
-
-          if (name.indexOf(searchVal) !== -1)
-            return { ...acc, [clientsIndex[i]]: client };
-
-          return acc;
-        }, {});
-
-      return setFilteredClients(filteredClientsArray);
-    }
-
-    return setFilteredClients(clients);
   };
 
   const renderAllClients = () => {
@@ -68,7 +37,7 @@ const AllClients = props => {
         </div>
 
         <div className="row align-items-stretch justify-content-center">
-          {renderClients(filteredClients)}
+          {renderClientCards(clients)}
         </div>
       </div>
     );
@@ -80,7 +49,7 @@ const AllClients = props => {
 
 const mapStateToProps = state => ({
   firebase: state.firebase,
-  clients: state.firestore.data.clients,
+  allClients: state.firestore.data.clients,
 });
 
 export default connect(mapStateToProps)(AllClients);
