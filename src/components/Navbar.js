@@ -1,11 +1,69 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { signOut } from '../actions/authActions';
 
-const Navbar = props => {
+const Navbar = () => {
+  const authObj = useSelector(state => state.firebase.auth);
+  const authId = authObj.uid;
+  const dispatch = useDispatch();
+
+  const handleSignOut = e => {
+    e.preventDefault();
+    dispatch(signOut());
+  };
+
+  const renderAuthButtons = () => {
+    if (!authId)
+      return (
+        <>
+          <li className="nav-item ml-auto">
+            <NavLink to="/sign-in">
+              <div className="nav-link">Sign In</div>
+            </NavLink>
+          </li>
+          <li className="nav-item ml-auto">
+            <NavLink to="/sign-up">
+              <div className="nav-link">Sign Up</div>
+            </NavLink>
+          </li>
+        </>
+      );
+
+    return (
+      <li className="nav-item ml-auto">
+        <div className="nav-link" onClick={handleSignOut}>
+          Logout
+        </div>
+      </li>
+    );
+  };
+
+  const renderNavButtons = auth => {
+    if (auth)
+      return (
+        <>
+          <li className="nav-item">
+            <NavLink to="/clients">
+              <div className="nav-link">Clients</div>
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
+            <NavLink to="/create-client">
+              <div className="nav-link">Add New Client</div>
+            </NavLink>
+          </li>
+        </>
+      );
+
+    return <></>;
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <NavLink to="/">
-        <div className="navbar-brand">Navbar</div>
+      <NavLink to="/clients">
+        <div className="navbar-brand">{authObj && authObj.email}</div>
       </NavLink>
       <button
         className="navbar-toggler"
@@ -20,25 +78,9 @@ const Navbar = props => {
       </button>
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <NavLink to="/clients">
-              <div className="nav-link">Clients</div>
-            </NavLink>
-          </li>
+        <ul className="navbar-nav">{renderNavButtons(authId)}</ul>
 
-          <li className="nav-item">
-            <NavLink to="/create-client">
-              <div className="nav-link">Add New Client</div>
-            </NavLink>
-          </li>
-
-          <li className="nav-item ml-auto">
-            <NavLink to="/sign-up">
-              <div className="nav-link">Sign Up</div>
-            </NavLink>
-          </li>
-        </ul>
+        <ul className="navbar-nav ml-auto">{renderAuthButtons(authId)}</ul>
       </div>
     </nav>
   );

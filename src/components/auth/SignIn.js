@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUp } from '../../actions/authActions';
 import { Redirect } from 'react-router-dom';
+import { signIn } from '../../actions/authActions';
 
-const SignUp = ({ history }) => {
+const SignIn = ({ history }) => {
   const dispatch = useDispatch();
   const [form, setForm] = useState({});
-  const authId = useSelector(({ firebase: { auth } }) => auth && auth.uid);
+  const errorMsg = useSelector(state => state.auth.authError);
+  const authId = useSelector(state => state.firebase.auth.uid);
 
   const onInputChange = e => {
     const name = e.target.name;
@@ -17,7 +18,12 @@ const SignUp = ({ history }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(signUp(form));
+    dispatch(signIn(form));
+    history.push('/');
+  };
+
+  const handleErrorMsg = msg => {
+    if (msg) return <p>{msg}</p>;
   };
 
   if (!authId)
@@ -25,6 +31,7 @@ const SignUp = ({ history }) => {
       <div className="container mt-5">
         <div className="row align-items-center justify-content-center">
           <div className="col-lg-10">
+            <h1 className="mb-3">Please sign in to proceed:</h1>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Email address</label>
@@ -52,6 +59,7 @@ const SignUp = ({ history }) => {
                 Submit
               </button>
             </form>
+            {handleErrorMsg(errorMsg)}
           </div>
         </div>
       </div>
@@ -60,4 +68,4 @@ const SignUp = ({ history }) => {
   return <Redirect to="/" />;
 };
 
-export default SignUp;
+export default SignIn;

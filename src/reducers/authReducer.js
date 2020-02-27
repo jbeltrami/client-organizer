@@ -17,7 +17,7 @@ const authReducer = (state = { authError: '' }, action) => {
       return state;
     case 'LOGIN_ERROR':
       console.log('LOGIN FAILED', action.payload);
-      return state;
+      return { ...state, authError: action.payload.message };
     default:
       return state;
   }

@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { useSelector, connect } from 'react-redux';
 import ClientCard from './ClientCard';
 
-const AllClients = () => {
+const AllClients = props => {
   useFirestoreConnect('clients');
-  const clients = useSelector(state => state.firestore.data.clients);
+  const clients = props.clients;
+  const authId = props.firebase.auth.uid;
   const [filteredClients, setFilteredClients] = useState({});
 
   useEffect(() => {
     setFilteredClients(clients);
   }, [clients]);
 
+  const verifyId = e => e.ownerId === authId;
+
   const renderClients = clientList => {
     const clientsArray = clientList && Object.values(clientList);
     const clientsIndex = clientList && Object.keys(clientList);
+    const availableClients = clientsArray && clientsArray.filter(verifyId);
 
-    if (clientsArray && clientsIndex)
-      return clientsArray.map((e, i) => {
+    if (availableClients && availableClients.length)
+      return availableClients.map((e, i) => {
         return (
           <ClientCard {...e} key={clientsIndex[i]} userId={clientsIndex[i]} />
         );
       });
+
+    return <p>Please add some clients.</p>;
   };
 
   const handleSearch = e => {
@@ -30,15 +37,17 @@ const AllClients = () => {
       const clientsArray = clients && Object.values(clients);
       const clientsIndex = clients && Object.keys(clients);
 
-      const filteredClientsArray = clientsArray.reduce((acc, client, i) => {
-        const name = `
+      const filteredClientsArray = clientsArray
+        .filter(verifyId)
+        .reduce((acc, client, i) => {
+          const name = `
           ${client.firstName.toLowerCase()} ${client.lastName.toLowerCase()}`;
 
-        if (name.indexOf(searchVal) !== -1)
-          return { ...acc, [clientsIndex[i]]: client };
+          if (name.indexOf(searchVal) !== -1)
+            return { ...acc, [clientsIndex[i]]: client };
 
-        return acc;
-      }, {});
+          return acc;
+        }, {});
 
       return setFilteredClients(filteredClientsArray);
     }
@@ -65,7 +74,13 @@ const AllClients = () => {
     );
   };
 
+  if (!authId) return <Redirect to="/sign-in" />;
   return renderAllClients();
 };
 
-export default AllClients;
+const mapStateToProps = state => ({
+  firebase: state.firebase,
+  clients: state.firestore.data.clients,
+});
+
+export default connect(mapStateToProps)(AllClients);
