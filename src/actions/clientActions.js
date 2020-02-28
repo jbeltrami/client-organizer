@@ -5,7 +5,7 @@ export const createClient = form => async (dispatch, getState, getFirebase) => {
   try {
     await firebase
       .firestore()
-      .collection('clients')
+      .collection("clients")
       .doc()
       .set({
         ownerId,
@@ -18,12 +18,12 @@ export const createClient = form => async (dispatch, getState, getFirebase) => {
         phoneNumber: form.phoneNumber,
         email: form.email,
         birthday: form.birthday,
-        createdAt: new Date(),
+        createdAt: new Date()
       });
 
-    await dispatch({ type: 'CREATE_CLIENT', payload: form });
+    await dispatch({ type: "CREATE_CLIENT", payload: form });
   } catch (error) {
-    await dispatch({ type: 'CREATE_CLIENT_ERROR', payload: error.message });
+    await dispatch({ type: "CREATE_CLIENT_ERROR", payload: error.message });
   }
 };
 
@@ -33,29 +33,31 @@ export const deleteClient = id => async (dispatch, getState, getFirebase) => {
   try {
     await firebase
       .firestore()
-      .collection('clients')
+      .collection("clients")
       .doc(id.toString())
       .delete();
 
-    await dispatch({ type: 'DELETE_CLIENT', payload: id });
+    await dispatch({ type: "DELETE_CLIENT", payload: id });
   } catch (error) {
-    await dispatch({ type: 'DELETE_CLIENT_ERROR', payload: error.message });
+    await dispatch({ type: "DELETE_CLIENT_ERROR", payload: error.message });
   }
 };
 
 export const updateClient = (id, form) => async (
   dispatch,
   getState,
-  getFirebase,
+  getFirebase
 ) => {
   const firebase = getFirebase();
+  const ownerId = getState().firebase.auth.uid;
 
   try {
     await firebase
       .firestore()
-      .collection('clients')
+      .collection("clients")
       .doc(id.toString())
       .set({
+        ownerId,
         firstName: form.firstName,
         lastName: form.lastName,
         address: form.address,
@@ -66,10 +68,10 @@ export const updateClient = (id, form) => async (
         email: form.email,
         birthday: form.birthday,
         createdAt: form.createdAt,
-        updatedAt: new Date(),
+        updatedAt: new Date()
       });
-    await dispatch({ type: 'UPDATE_CLIENT', payload: form });
+    await dispatch({ type: "UPDATE_CLIENT", payload: form });
   } catch (error) {
-    await dispatch({ type: 'UPDATE_CLIENT_ERROR', payload: error.message });
+    await dispatch({ type: "UPDATE_CLIENT_ERROR", payload: error.message });
   }
 };
