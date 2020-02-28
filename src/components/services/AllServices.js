@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
-import ServiceAccordion from './ServiceAccordion';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useFirestoreConnect } from "react-redux-firebase";
+import ServiceAccordion from "./ServiceAccordion";
+import moment from "moment";
 
 const AllServices = ({ client }) => {
-  useFirestoreConnect('services');
+  useFirestoreConnect("services");
   const [filterServices, setFilterServices] = useState({});
 
   const services = useSelector(({ firestore: { data } }) => {
@@ -26,17 +27,15 @@ const AllServices = ({ client }) => {
   });
 
   const renderFilters = () => {
-    console.log(typeof services);
-    return <div className="col-md-12">Filters go here</div>;
+    return <div className='col-md-12'>Filters go here</div>;
   };
 
   const renderServices = servicesList => {
-    const servicesArray = Object.values(servicesList);
-    const servicesIndex = Object.keys(servicesList);
+    const servicesArray = servicesList && Object.entries(servicesList);
 
-    if (servicesArray && servicesIndex)
-      return servicesArray.map((service, i) => {
-        return <ServiceAccordion {...service} key={servicesIndex[i]} />;
+    if (servicesArray && servicesArray.length)
+      return servicesArray.map(e => {
+        return <ServiceAccordion {...e[1]} serviceId={e[0]} key={e[0]} />;
       });
 
     return <></>;
@@ -44,8 +43,8 @@ const AllServices = ({ client }) => {
 
   return (
     <>
-      <div className="row mb-3">{renderFilters()}</div>
-      <div className="row align-items-start">{renderServices(services)}</div>
+      <div className='row mb-3'>{renderFilters()}</div>
+      <div className='row align-items-start'>{renderServices(services)}</div>
     </>
   );
 };
