@@ -9,15 +9,15 @@ export const createClient = form => async (dispatch, getState, getFirebase) => {
       .doc()
       .set({
         ownerId,
-        firstName: form.firstName,
-        lastName: form.lastName,
-        address: form.address,
-        city: form.city,
-        state: form.state,
-        zip: form.zip,
-        phoneNumber: form.phoneNumber,
-        email: form.email,
-        birthday: form.birthday,
+        firstName: form.firstName || "",
+        lastName: form.lastName || "",
+        address: form.address || "",
+        city: form.city || "",
+        state: form.state || "",
+        zip: form.zip || "",
+        phoneNumber: form.phoneNumber || "",
+        email: form.email || "",
+        birthday: form.birthday || "",
         createdAt: new Date()
       });
 
@@ -58,16 +58,16 @@ export const updateClient = (id, form) => async (
       .doc(id.toString())
       .set({
         ownerId,
-        firstName: form.firstName,
-        lastName: form.lastName,
-        address: form.address,
-        city: form.city,
-        state: form.state,
-        zip: form.zip || form.zip,
-        phoneNumber: form.phoneNumber,
-        email: form.email,
-        birthday: form.birthday,
-        createdAt: form.createdAt,
+        firstName: form.firstName || "",
+        lastName: form.lastName || "",
+        address: form.address || "",
+        city: form.city || "",
+        state: form.state || "",
+        zip: form.zip || "",
+        phoneNumber: form.phoneNumber || "",
+        email: form.email || "",
+        birthday: form.birthday || "",
+        createdAt: form.createdAt || "",
         updatedAt: new Date()
       });
     await dispatch({ type: "UPDATE_CLIENT", payload: form });

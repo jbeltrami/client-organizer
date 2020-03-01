@@ -14,10 +14,10 @@ export const createService = form => async (
       .set({
         ownerId: auth.uid,
         clientId: form.clientId,
-        label: form.label,
-        price: form.price,
-        date: form.date,
-        description: form.description
+        label: form.label || "",
+        price: form.price || "",
+        date: form.date || "",
+        description: form.description || ""
       });
 
     await dispatch({ type: "CREATE_SERVICE", payload: form });
@@ -41,10 +41,10 @@ export const updateService = (id, form) => async (
       .set({
         ownerId: form.ownerId,
         clientId: form.clientId,
-        label: form.label,
-        price: form.price,
-        date: form.date,
-        description: form.description,
+        label: form.label || "",
+        price: form.price || "",
+        date: form.date || "",
+        description: form.description || "",
         updatedAt: new Date()
       });
     await dispatch({ type: "UPDATE_SERVICE", payload: form });
