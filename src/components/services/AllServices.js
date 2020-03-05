@@ -1,40 +1,58 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { useFirestoreConnect } from "react-redux-firebase";
-import ServiceAccordion from "./ServiceAccordion";
-import moment from "moment";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import ServiceAccordion from './ServiceAccordion';
+import { sortByDate } from '../../helpers/sortByDate';
+import _ from 'lodash';
 
-const AllServices = ({ client }) => {
-  useFirestoreConnect("services");
-  const [filterServices, setFilterServices] = useState({});
+const AllServices = ({ client, services }) => {
+  const [servicesToRender, setServicesToRender] = useState();
 
-  const services = useSelector(({ firestore: { data } }) => {
-    if (data.services) {
-      const servicesArray = Object.values(data.services);
-      const servicesIndex = Object.keys(data.services);
+  useEffect(() => {
+    setServicesToRender(services);
+  }, [services]);
 
-      const returnObj = servicesArray.reduce((acc, singleService, i) => {
-        if (singleService.clientId === client)
-          return { ...acc, [servicesIndex[i]]: singleService };
+  const handleYearFilter = e => {
+    const val = e.target.value;
 
-        return acc;
-      }, {});
+    if (val !== 'All') {
+      const filteredEntries = servicesToRender.filter(
+        el => el[1].date.split('/').pop() === val,
+      );
 
-      return returnObj;
+      return setServicesToRender(filteredEntries);
     }
 
-    return {};
-  });
+    return setServicesToRender(services);
+  };
 
-  const renderFilters = () => {
-    return <div className='col-md-12'>Filters go here</div>;
+  const renderFilters = serviceList => {
+    const buildFilters =
+      serviceList &&
+      _.uniq(serviceList.map(e => e[1].date.split('/').pop())).sort(
+        (a, b) => b - a,
+      );
+
+    return (
+      buildFilters &&
+      buildFilters.map(e => (
+        <button
+          className="btn btn-dark m-1"
+          key={e}
+          onClick={handleYearFilter}
+          value={e}
+        >
+          {e}
+        </button>
+      ))
+    );
   };
 
   const renderServices = servicesList => {
-    const servicesArray = servicesList && Object.entries(servicesList);
-
-    if (servicesArray && servicesArray.length)
-      return servicesArray.map(e => {
+    if (servicesList && servicesList.length)
+      return servicesList.sort(sortByDate).map(e => {
         return <ServiceAccordion {...e[1]} serviceId={e[0]} key={e[0]} />;
       });
 
@@ -43,10 +61,41 @@ const AllServices = ({ client }) => {
 
   return (
     <>
-      <div className='row mb-3'>{renderFilters()}</div>
-      <div className='row align-items-start'>{renderServices(services)}</div>
+      <div className="row mb-3">
+        <div className="col-md-12 d-flex flex-row">
+          {renderFilters(servicesToRender)}
+          {services !== servicesToRender ? (
+            <button
+              className="btn btn-dark d-inline-block ml-auto"
+              key="all"
+              value="All"
+              onClick={handleYearFilter}
+            >
+              Clear Filter
+            </button>
+          ) : (
+            ''
+          )}
+        </div>
+      </div>
+      <div className="row align-items-start">
+        {renderServices(servicesToRender)}
+      </div>
     </>
   );
 };
 
-export default AllServices;
+const mapStateToProps = (state, ownProps) => {
+  const servicesToProps = state.firestore.data.services;
+  const passServices =
+    servicesToProps &&
+    Object.entries(servicesToProps).filter(
+      e => e[1].clientId === ownProps.client,
+    );
+  return { services: passServices };
+};
+
+export default compose(
+  firestoreConnect(() => ['services']),
+  connect(mapStateToProps),
+)(AllServices);
