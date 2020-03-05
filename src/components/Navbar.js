@@ -4,7 +4,6 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { signOut } from '../actions/authActions';
 
 const Navbar = ({ history }) => {
-  console.log(history);
   const authObj = useSelector(state => state.firebase.auth);
   const authId = authObj.uid;
   const dispatch = useDispatch();
