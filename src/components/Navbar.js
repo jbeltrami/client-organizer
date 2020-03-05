@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { signOut } from '../actions/authActions';
 
-const Navbar = () => {
+const Navbar = ({ history }) => {
+  console.log(history);
   const authObj = useSelector(state => state.firebase.auth);
   const authId = authObj.uid;
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const Navbar = () => {
   const handleSignOut = e => {
     e.preventDefault();
     dispatch(signOut());
+    history.push('/');
   };
 
   const renderAuthButtons = () => {
@@ -86,4 +88,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default withRouter(Navbar);
