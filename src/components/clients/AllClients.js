@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useFirestoreConnect } from "react-redux-firebase";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import ClientCard from "./ClientCard";
+import React, { useState, useEffect } from 'react';
+import { useFirestoreConnect } from 'react-redux-firebase';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import ClientCard from './ClientCard';
 
 const AllClients = props => {
-  useFirestoreConnect("clients");
+  useFirestoreConnect('clients');
   const clients = props.clients;
   const authId = props.firebase.auth.uid;
   const [filteredClients, setFilteredClients] = useState({});
@@ -14,7 +14,7 @@ const AllClients = props => {
     setFilteredClients(clients);
   }, [clients]);
 
-  const verifyId = e => e.ownerId === authId;
+  const verifyId = e => e[1].ownerId === authId;
 
   const renderClients = clientList => {
     const clientCollection = clientList && Object.entries(clientList);
@@ -33,18 +33,17 @@ const AllClients = props => {
 
   const handleSearch = e => {
     const searchVal = e.target.value.toLowerCase();
-    if (searchVal !== "") {
-      const clientsArray = clients && Object.values(clients);
-      const clientsIndex = clients && Object.keys(clients);
+    if (searchVal !== '') {
+      const testArray = clients && Object.entries(clients);
 
-      const filteredClientsArray = clientsArray
+      const filteredClientsArray = testArray
         .filter(verifyId)
         .reduce((acc, client, i) => {
           const name = `
-          ${client.firstName.toLowerCase()} ${client.lastName.toLowerCase()}`;
+          ${client[1].firstName.toLowerCase()} ${client[1].lastName.toLowerCase()}`;
 
           if (name.indexOf(searchVal) !== -1)
-            return { ...acc, [clientsIndex[i]]: client };
+            return { ...acc, [client[0]]: client[1] };
 
           return acc;
         }, {});
@@ -58,7 +57,7 @@ const AllClients = props => {
   const handleSearchByTel = e => {
     const searchVal = e.target.value;
 
-    if (searchVal !== "") {
+    if (searchVal !== '') {
       const clientsArray = clients && Object.values(clients);
       const clientsIndex = clients && Object.keys(clients);
 
@@ -79,41 +78,41 @@ const AllClients = props => {
 
   const renderAllClients = () => {
     return (
-      <div className='container mt-5'>
-        <div className='row align-items-center justify-content-center mb-5'>
-          <div className='col-md-6'>
-            <form className='d-flex flex-column'>
-              <label htmlFor='seach-box'>Search by Name</label>
-              <input type='text' name='search-box' onChange={handleSearch} />
+      <div className="container mt-5">
+        <div className="row align-items-center justify-content-center mb-5">
+          <div className="col-md-6">
+            <form className="d-flex flex-column">
+              <label htmlFor="seach-box">Search by Name</label>
+              <input type="text" name="search-box" onChange={handleSearch} />
             </form>
           </div>
 
-          <div className='col-md-6'>
-            <form className='d-flex flex-column'>
-              <label htmlFor='seach-box'>Search by Phone Number</label>
+          <div className="col-md-6">
+            <form className="d-flex flex-column">
+              <label htmlFor="seach-box">Search by Phone Number</label>
               <input
-                type='text'
-                name='search-box'
+                type="text"
+                name="search-box"
                 onChange={handleSearchByTel}
               />
             </form>
           </div>
         </div>
 
-        <div className='row align-items-stretch justify-content-center'>
+        <div className="row align-items-stretch justify-content-center">
           {renderClients(filteredClients)}
         </div>
       </div>
     );
   };
 
-  if (!authId) return <Redirect to='/sign-in' />;
+  if (!authId) return <Redirect to="/sign-in" />;
   return renderAllClients();
 };
 
 const mapStateToProps = state => ({
   firebase: state.firebase,
-  clients: state.firestore.data.clients
+  clients: state.firestore.data.clients,
 });
 
 export default connect(mapStateToProps)(AllClients);
