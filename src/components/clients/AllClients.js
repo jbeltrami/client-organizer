@@ -34,9 +34,9 @@ const AllClients = props => {
   const handleSearch = e => {
     const searchVal = e.target.value.toLowerCase();
     if (searchVal !== '') {
-      const testArray = clients && Object.entries(clients);
+      const clientsArray = clients && Object.entries(clients);
 
-      const filteredClientsArray = testArray
+      const filteredClientsArray = clientsArray
         .filter(verifyId)
         .reduce((acc, client, i) => {
           const name = `
@@ -58,14 +58,18 @@ const AllClients = props => {
     const searchVal = e.target.value;
 
     if (searchVal !== '') {
-      const clientsArray = clients && Object.values(clients);
-      const clientsIndex = clients && Object.keys(clients);
+      const clientsArray = clients && Object.entries(clients);
 
       const filteredClientsArray = clientsArray
         .filter(verifyId)
         .reduce((acc, client, i) => {
-          if (client.phoneNumber.indexOf(searchVal) !== -1)
-            return { ...acc, [clientsIndex[i]]: client };
+          if (
+            client[1].phoneNumber
+              .split('-')
+              .join('')
+              .indexOf(searchVal) !== -1
+          )
+            return { ...acc, [client[0]]: client[1] };
 
           return acc;
         }, {});
