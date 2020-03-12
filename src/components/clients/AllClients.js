@@ -55,7 +55,7 @@ const AllClients = props => {
   };
 
   const handleSearchByTel = e => {
-    const searchVal = e.target.value;
+    const searchVal = e.target.value.split(' ').join('');
 
     if (searchVal !== '') {
       const clientsArray = clients && Object.entries(clients);
