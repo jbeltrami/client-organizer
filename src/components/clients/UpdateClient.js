@@ -47,7 +47,6 @@ const UpdateClient = props => {
                       name="firstName"
                       onChange={onInputChange}
                       defaultValue={someForm.firstName}
-                      required
                     />
                   </div>
                   <div className="form-group col">
@@ -58,7 +57,6 @@ const UpdateClient = props => {
                       name="lastName"
                       onChange={onInputChange}
                       defaultValue={someForm.lastName}
-                      required
                     />
                   </div>
                 </div>
@@ -72,7 +70,6 @@ const UpdateClient = props => {
                       name="address"
                       onChange={onInputChange}
                       defaultValue={someForm.address}
-                      required
                     />
                   </div>
                 </div>
@@ -86,7 +83,6 @@ const UpdateClient = props => {
                       name="city"
                       onChange={onInputChange}
                       defaultValue={someForm.city}
-                      required
                     />
                   </div>
                   <div className="form-group col-md-4">
@@ -97,7 +93,6 @@ const UpdateClient = props => {
                       name="state"
                       onChange={onInputChange}
                       defaultValue={someForm.state}
-                      required
                     />
                   </div>
                   <div className="form-group col-md-2">
@@ -108,7 +103,6 @@ const UpdateClient = props => {
                       name="zip"
                       onChange={onInputChange}
                       defaultValue={someForm.zip}
-                      required
                     />
                   </div>
                 </div>
@@ -122,7 +116,6 @@ const UpdateClient = props => {
                       name="phoneNumber"
                       onChange={onInputChange}
                       defaultValue={someForm.phoneNumber}
-                      required
                     />
                   </div>
                   <div className="form-group col">
@@ -146,7 +139,6 @@ const UpdateClient = props => {
                       name="email"
                       onChange={onInputChange}
                       defaultValue={someForm.email}
-                      required
                     />
                   </div>
                 </div>
