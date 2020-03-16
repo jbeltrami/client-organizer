@@ -33,7 +33,6 @@ const CreateService = ({ history }) => {
                   type="text"
                   className="form-control"
                   name="label"
-                  required
                 />
               </div>
             </div>
@@ -46,7 +45,6 @@ const CreateService = ({ history }) => {
                   type="number"
                   className="form-control"
                   name="price"
-                  required
                 />
               </div>
               <div className="form-group col-md-6">
@@ -56,7 +54,6 @@ const CreateService = ({ history }) => {
                   type="text"
                   className="form-control"
                   name="date"
-                  required
                 />
               </div>
             </div>
@@ -68,7 +65,6 @@ const CreateService = ({ history }) => {
                 name="description"
                 rows="8"
                 onChange={handleInputChange}
-                required
               ></textarea>
             </div>
             <button type="submit" className="btn btn-info">
