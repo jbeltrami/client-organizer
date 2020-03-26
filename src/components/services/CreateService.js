@@ -42,7 +42,7 @@ const CreateService = ({ history }) => {
                 <label htmlFor="price">Price</label>
                 <input
                   onChange={handleInputChange}
-                  type="number"
+                  type="text"
                   className="form-control"
                   name="price"
                 />

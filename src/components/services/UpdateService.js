@@ -62,7 +62,7 @@ const UpdateService = props => {
                     <label htmlFor="price">Price</label>
                     <input
                       onChange={onInputChange}
-                      type="number"
+                      type="text"
                       className="form-control"
                       name="price"
                       defaultValue={service.price}
